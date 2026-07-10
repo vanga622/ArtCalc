@@ -1,5 +1,5 @@
 // Service Worker для офлайн-режима
-const CACHE = 'arty-calc-v15';
+const CACHE = 'arty-calc-v16';
 const ASSETS = [
   './',
   './index.html',
