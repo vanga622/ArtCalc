@@ -71,7 +71,16 @@ const MORTARS = {
 		trajectories: ['flat'],
 		defaultTrajectory: 'flat',
 		tableTitle: 'Таблица стрельбы Type-63-2 HE(система 60-00)',
-  }
+  },
+	'bm21':{
+	  	name: 'РСЗО «Град»',
+		mil: 6000,
+		heightFormula: 'd30',
+		trajectories: ['flat'],
+		defaultTrajectory: 'flat',
+		tableTitle: 'Таблица стрельбы РСЗО «Град» (система 60-00)',
+   }
+		
   
 };
 
@@ -179,7 +188,7 @@ function getCurrentTrajectory() {
 function isMortarTrajectory() { return getCurrentTrajectory() === 'mortar'; }
 function rangeSignForCurrentSetup() {
   if (currentMortar === 'm224' || currentMortar === 'm252') return 1;
-  if (currentMortar === 'type63') return -1;
+  if (currentMortar === 'type63' || currentMortar === 'bm21') return -1;
   if (currentMortar === '2b9' || currentMortar === 'd30' || currentMortar === 'm119') return isMortarTrajectory() ? 1 : -1;
   return -1;
 }
@@ -458,7 +467,7 @@ function calcHeight() {
   let Ph = (deltaH / 100) * dph;
   let dP = Ph;
   let detailTail = '';
-  if (currentMortar === '2b9' || currentMortar === 'd30' || currentMortar === 'm119' || currentMortar === 'm224' || currentMortar === 'm252' || currentMortar === 'type63') {
+  if (currentMortar === '2b9' || currentMortar === 'd30' || currentMortar === 'm119' || currentMortar === 'm224' || currentMortar === 'm252' || currentMortar === 'type63' || currentMortar === 'bm21') {
     if (isMortarTrajectory()) {
       dP = -1 * Ph;
       detailTail = `Для ${MORTARS[currentMortar].name} (мортирная): ΔП = −Ph`;
@@ -863,6 +872,9 @@ const CHARGES_M252 = [
 const CHARGES_TYPE63 = [
  { value: '0', label: 'Type 63-2 HE', selected: true}
 ];
+const CHARGES_BM21 = [
+ { value: '0', label: 'РС', selected: true}
+];
 
 function updateChargeOptions(mortar) {
   const sel = $('global-charge');
@@ -873,7 +885,8 @@ function updateChargeOptions(mortar) {
 	: (mortar === 'm224' ? CHARGES_M224
 	: (mortar === 'm252' ? CHARGES_M252
 	: (mortar === 'type63' ? CHARGES_TYPE63
-    : (mortar === 'm119' ? CHARGES_M119 : CHARGES_2B14))))));
+	: (mortar === 'bm21' ? CHARGES_BM21
+    : (mortar === 'm119' ? CHARGES_M119 : CHARGES_2B14)))))));
   const curVal = sel.value;
   sel.innerHTML = '';
   charges.forEach(c => {
